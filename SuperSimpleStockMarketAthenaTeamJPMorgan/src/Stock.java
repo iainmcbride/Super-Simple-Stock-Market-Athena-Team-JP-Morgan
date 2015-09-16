@@ -41,7 +41,7 @@ public class Stock
 	/**
 	 * A list of the trades involving this stock
 	 */
-	private ArrayList<Trade> trades;
+	private Trades allTrades;
 	
 	/**
 	 * The number of trades within the last 15 minutes
@@ -66,7 +66,7 @@ public class Stock
 		this.fixedDividend = fixedDividend;
 		this.parValue = parValue;
 
-		trades = new ArrayList<Trade>();
+		allTrades = new Trades();
 		tradesintheLastFifteenMinutes = 0;
 	}
 
@@ -87,7 +87,7 @@ public class Stock
 	 */
 	public int countTrades()
 	{
-		return trades.size();
+		return allTrades.countTrades();
 	}
 	
 	
@@ -163,7 +163,8 @@ public class Stock
 	 */
 	public void tradeThisStock(int tradeQuantity, int tradePrice,  Stock.TRADETYPE tradeType, Date timeStamp)
 	{
-		trades.add(new Trade(tradeQuantity, tradePrice, tradeType, timeStamp));
+		//trades.add(new Trade(tradeQuantity, tradePrice, tradeType, timeStamp));
+		allTrades.addTrade(tradeQuantity, tradePrice, tradeType, timeStamp);
 	}
 
 
@@ -178,6 +179,8 @@ public class Stock
 		double denominator = 0.0;
 		
 		this.tradesintheLastFifteenMinutes = 0;
+		
+		ArrayList<Trade> trades = allTrades.getTrades();
 
 
 		/*
@@ -212,6 +215,9 @@ public class Stock
 	public String printTrades()
 	{
 		String outputString = "";
+		
+		ArrayList<Trade> trades = allTrades.getTrades();
+
 
 		for (Trade trade : trades)
 		{
@@ -231,98 +237,98 @@ public class Stock
 	}
 
 
-	/**
-	 * Create an inner class to handle the trades for a given stock.
-	 * 
-	 * @author Iain
-	 *
-	*/
-	private class Trade
-	{
-		/**
-		 * The price at which the stock is traded.
-		 */
-		int tradePrice; 
-
-		/**
-		 * The quantity of stock which is being traded
-		 */
-		int tradeQuantity;
-
-		/**
-		 * The type of trade - either BUY or SELL
-		 */
-		Stock.TRADETYPE tradeType;
-
-		/**
-		 * The exact time at which the trade was processed
-		 */
-		Date timeStamp;
-
-		/**
-		 * Generate a trade involving this stock object
-		 * 
-		 * @param tradeQuantity The quantity of this stock object to be traded
-		 * @param tradePrice	The price at which the stock is traded in this trade
-		 * @param tradeType		The type of trade - either BUY or SELL
-		 * @param timeStamp		The timestamp of this trade
-		 */
-		public Trade(int tradeQuantity, int tradePrice, Stock.TRADETYPE tradeType, Date timeStamp)
-		{
-			this.tradePrice = tradePrice;
-			this.tradeQuantity = tradeQuantity;
-			this.tradeType = tradeType;
-			this.timeStamp = timeStamp;
-		}
-
-
-		/**
-		 * Returns the price at which the stock was traded in this trade
-		 * 
-		 * @return tradePrice	The price at which the stock was traded
-		 */
-		public int getTradePrice()
-		{
-			return tradePrice;
-		}
-
-		/**
-		 * Returns the quantity of this stock which was traded in this trade
-		 * 
-		 * @return tradeQuantity	The quantity of this stock which was traded in this trade
-		 */
-		public int getTradeQuantity()
-		{
-			return tradeQuantity;
-		}
-
-		/**
-		 * Returns the type of this trade - either BUY or SELL
-		 * 
-		 * @return tradeType 	The type of this trade - either BUY or SELL
-		 */
-		public Stock.TRADETYPE getTradeType()
-		{
-			return tradeType;
-		}
-
-		/**
-		 * Returns the exact time at which this trade was processed
-		 * 
-		 * @return timeStamp 	The exact time at which this trade was processed
-		 */
-		public Date getTimeStamp()
-		{
-			return timeStamp;
-		}
-
-
-		public String toString()
-		{
-			String tradeDetails = String.format("%-8s : %-11s : %-10s : %-8s", tradeQuantity, tradePrice, tradeType, timeStamp);
-			return tradeDetails;
-		}
-
-	}
+//	/**
+//	 * Create an inner class to handle the trades for a given stock.
+//	 * 
+//	 * @author Iain
+//	 *
+//	*/
+//	private class Trade
+//	{
+//		/**
+//		 * The price at which the stock is traded.
+//		 */
+//		int tradePrice; 
+//
+//		/**
+//		 * The quantity of stock which is being traded
+//		 */
+//		int tradeQuantity;
+//
+//		/**
+//		 * The type of trade - either BUY or SELL
+//		 */
+//		Stock.TRADETYPE tradeType;
+//
+//		/**
+//		 * The exact time at which the trade was processed
+//		 */
+//		Date timeStamp;
+//
+//		/**
+//		 * Generate a trade involving this stock object
+//		 * 
+//		 * @param tradeQuantity The quantity of this stock object to be traded
+//		 * @param tradePrice	The price at which the stock is traded in this trade
+//		 * @param tradeType		The type of trade - either BUY or SELL
+//		 * @param timeStamp		The timestamp of this trade
+//		 */
+//		public Trade(int tradeQuantity, int tradePrice, Stock.TRADETYPE tradeType, Date timeStamp)
+//		{
+//			this.tradePrice = tradePrice;
+//			this.tradeQuantity = tradeQuantity;
+//			this.tradeType = tradeType;
+//			this.timeStamp = timeStamp;
+//		}
+//
+//
+//		/**
+//		 * Returns the price at which the stock was traded in this trade
+//		 * 
+//		 * @return tradePrice	The price at which the stock was traded
+//		 */
+//		public int getTradePrice()
+//		{
+//			return tradePrice;
+//		}
+//
+//		/**
+//		 * Returns the quantity of this stock which was traded in this trade
+//		 * 
+//		 * @return tradeQuantity	The quantity of this stock which was traded in this trade
+//		 */
+//		public int getTradeQuantity()
+//		{
+//			return tradeQuantity;
+//		}
+//
+//		/**
+//		 * Returns the type of this trade - either BUY or SELL
+//		 * 
+//		 * @return tradeType 	The type of this trade - either BUY or SELL
+//		 */
+//		public Stock.TRADETYPE getTradeType()
+//		{
+//			return tradeType;
+//		}
+//
+//		/**
+//		 * Returns the exact time at which this trade was processed
+//		 * 
+//		 * @return timeStamp 	The exact time at which this trade was processed
+//		 */
+//		public Date getTimeStamp()
+//		{
+//			return timeStamp;
+//		}
+//
+//
+//		public String toString()
+//		{
+//			String tradeDetails = String.format("%-8s : %-11s : %-10s : %-8s", tradeQuantity, tradePrice, tradeType, timeStamp);
+//			return tradeDetails;
+//		}
+//
+//	}
 
 }
