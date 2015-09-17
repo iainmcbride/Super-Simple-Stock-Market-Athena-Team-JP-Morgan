@@ -57,6 +57,7 @@ public class StarterClass {
 
 			try
 			{
+				// if k=0 then generate a BUY trade, otherwise k=1 and we generate a SELL trade
 				if (k == 0)
 				{
 					stockTraded.tradeThisStock(numberSold, price, Trade.TRADETYPE.BUY, new Date(new Date().getTime() - timeDifference));
@@ -73,7 +74,7 @@ public class StarterClass {
 			}
 		}
 
-
+		// create a PrintWriter to output the Stock and Trade Details to a text file
 		PrintWriter out = null;
 
 		try
@@ -98,14 +99,16 @@ public class StarterClass {
 				 */
 				out.println("****Transactions by Stock \n");
 
-
+				// for each stock get a list of all trades involving that stock and output them to
+				// the PrintWriter
 				for (int i = 0; i < allStocks.getStocksCount(); i++)
 				{
 					Stock stock = allStocks.getStock(i);
 
 					out.println(stock.getStockName());
-					//System.out.println(stock.printTrades());
 
+					// if there have been trades involving this stock then output the details of those trades
+					// otherwise indicate that no trades have occured
 					if (stock.countTrades() >0)
 					{
 
@@ -131,12 +134,17 @@ public class StarterClass {
 				out.println("****Stock performance data \n");
 
 				out.format("%12s : %11s : %8s : %14s : %26s \n", "Stock Symbol", "Stock Price", "PE Ratio", "Dividend Yield", "Trades in the last 15 mins");
+				
+				// for each stock output the the Stock Price, PE Ratio, Dividend yield and a count
+				// of the number of trades within the last 15 minutes
 				for (int i = 0; i < allStocks.getStocksCount(); i++)
 				{
 
 					Stock stock = allStocks.getStock(i);
 					stock.getStockPrice();
 
+					// if there have been trades involving this stock in the last 15 minutes then output the details
+					// otherwise indicate that no trades involving this stock have occured in the last 15 minutes
 					if (stock.countTradesintheLastFifteenMinutes() >0)
 					{
 						out.format("%-12s : %-11.2f : %-8.3f : %-14.3f : %-26s \n", stock.getStockName(), stock.getStockPrice(), stock.getPriceEarningRatio(), stock.getDividendYield(), stock.countTradesintheLastFifteenMinutes());
