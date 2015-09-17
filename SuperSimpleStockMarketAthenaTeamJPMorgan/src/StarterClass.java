@@ -143,8 +143,8 @@ public class StarterClass {
 					Stock stock = allStocks.getStock(i);
 					stock.getStockPrice();
 
-					// if there have been trades involving this stock in the last 15 minutes then output the details
-					// otherwise indicate that no trades involving this stock have occured in the last 15 minutes
+					// if there have been trades involving this stock in the last 15 minutes then output the details of 
+					// those trades, otherwise indicate that no trades involving this stock have occured in the last 15 minutes
 					if (stock.countTradesintheLastFifteenMinutes() >0)
 					{
 						out.format("%-12s : %-11.2f : %-8.3f : %-14.3f : %-26s \n", stock.getStockName(), stock.getStockPrice(), stock.getPriceEarningRatio(), stock.getDividendYield(), stock.countTradesintheLastFifteenMinutes());
