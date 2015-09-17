@@ -12,6 +12,12 @@ import org.junit.runners.Suite;
 	Trades_Test.class
 })
 
+/**
+ * Create a test suite to run all of the tests for each separate class from one location.
+ * 
+ * @author Iain
+ *
+ */
 public class TestSuite {
 
 

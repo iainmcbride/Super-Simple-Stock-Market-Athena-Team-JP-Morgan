@@ -208,16 +208,19 @@ public class Stock
 
 
 		/*
-		 * Select the trades from the last 15 minutes that will be used to calculate the stock price
+		 * Calculate the time 15 minutes ago
 		 */
 		Date now = new Date();
 		long milliSecsinFifteenMinutes = (15*60*1000);  // (15*60*1000) is the number of milliseconds in 15 minutes
 		Long fifteenMinutesAgo = now.getTime() - milliSecsinFifteenMinutes; 
 		
+		// Iterate over all trades for this stock selecting only those within the last 15 minuets to calculate
+		// the stock price
 		for (int i = 0; i < trades.size(); i++)
 		{
 			Trade thisTrade = trades.get(i);
 			
+			// if this trade has a timestamp within the last 15 minutes
 			if (thisTrade.getTimeStamp().after(new Date(fifteenMinutesAgo)))
 			{
 				numerator += (thisTrade.getTradePrice() * thisTrade.getTradeQuantity());
@@ -242,7 +245,6 @@ public class Stock
 		
 		ArrayList<Trade> trades = allTrades.getTrades();
 
-
 		for (Trade trade : trades)
 		{
 			outputString += trade + "\n";
@@ -260,22 +262,42 @@ public class Stock
 		return this.stockSymbol;
 	}
 	
+	/**
+	 * Return the stock type of this stock - either Common or Preferred. Other types may be added to the
+	 * list of possible stock types by extending the Stock.STOCKTYPE enum.
+	 * 
+	 * @return stockType The type of stock either Common or Preferred
+	 */
 	public STOCKTYPE getStockType()
 	{
 		return stockType;
 	}
 	
-	
+	/**
+	 * Return the last dividend paid on this stock.
+	 * 
+	 * @return The last dividend paid on this stock
+	 */
 	public int getLastDividend()
 	{
 		return lastDividend;
 	}
 
+	/**
+	 * Return the fixed dividend payable on this stock.
+	 * 
+	 * @return fixedDividend The fixed dividend payable on this stock.
+	 */
 	public double getFixedDividend()
 	{
 		return fixedDividend;
 	}
 	
+	/**
+	 * Return the Par Value of this stock
+	 * 
+	 * @return parValue The Par Value payable on this stock
+	 */
 	public int getParValue()
 	{
 		return parValue;
