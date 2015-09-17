@@ -1,3 +1,5 @@
+package models;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -23,7 +25,7 @@ public class Trades
 		return trades.size();
 	}
 	
-	public void addTrade(int tradeQuantity, int tradePrice,  Stock.TRADETYPE tradeType, Date timeStamp)
+	public void addTrade(int tradeQuantity, int tradePrice,  Trade.TRADETYPE tradeType, Date timeStamp)
 	{
 		trades.add(new Trade(tradeQuantity, tradePrice, tradeType, timeStamp));
 	}

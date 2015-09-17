@@ -1,8 +1,14 @@
+package models;
+
 import java.util.Date;
 
 
 public class Trade
 {
+	
+	public enum TRADETYPE {BUY, SELL}
+	
+	
 	/**
 	 * The price at which the stock is traded.
 	 */
@@ -16,7 +22,7 @@ public class Trade
 	/**
 	 * The type of trade - either BUY or SELL
 	 */
-	Stock.TRADETYPE tradeType;
+	Trade.TRADETYPE tradeType;
 
 	/**
 	 * The exact time at which the trade was processed
@@ -31,12 +37,25 @@ public class Trade
 	 * @param tradeType		The type of trade - either BUY or SELL
 	 * @param timeStamp		The timestamp of this trade
 	 */
-	public Trade(int tradeQuantity, int tradePrice, Stock.TRADETYPE tradeType, Date timeStamp)
+	public Trade(int tradeQuantity, int tradePrice, Trade.TRADETYPE tradeType, Date timeStamp)
 	{
 		this.tradePrice = tradePrice;
 		this.tradeQuantity = tradeQuantity;
 		this.tradeType = tradeType;
 		this.timeStamp = timeStamp;
+		
+		if (tradeQuantity < 0)
+		{
+			throw new IllegalArgumentException("Trade quantity is negative.");
+		}
+		
+		if (tradePrice < 0)
+		{
+			throw new IllegalArgumentException("Trade price is negative.");
+		}
+		
+		
+		
 	}
 
 
@@ -65,7 +84,7 @@ public class Trade
 	 * 
 	 * @return tradeType 	The type of this trade - either BUY or SELL
 	 */
-	public Stock.TRADETYPE getTradeType()
+	public Trade.TRADETYPE getTradeType()
 	{
 		return tradeType;
 	}

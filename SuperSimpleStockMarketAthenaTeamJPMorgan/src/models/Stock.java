@@ -1,3 +1,5 @@
+package models;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -5,7 +7,7 @@ import java.util.Date;
 public class Stock 
 {
 	public enum STOCKTYPE {COMMON, PREFERRED}
-	public enum TRADETYPE {BUY, SELL}
+	
 
 	/**
 	 * The ticker price of this stock
@@ -98,11 +100,32 @@ public class Stock
 	 */
 	public int countTradesintheLastFifteenMinutes()
 	{
+		
+		this.tradesintheLastFifteenMinutes = 0;
+		
+		ArrayList<Trade> trades = allTrades.getTrades();
+
+
+		/*
+		 * Select the trades from the last 15 minutes that will be used to calculate the stock price
+		 */
+		Date now = new Date();
+		long milliSecsinFifteenMinutes = (15*60*1000);  // (15*60*1000) is the number of milliseconds in 15 minutes
+		Long fifteenMinutesAgo = now.getTime() - milliSecsinFifteenMinutes; 
+		
+		for (int i = 0; i < trades.size(); i++)
+		{
+			Trade thisTrade = trades.get(i);
+			
+			if (thisTrade.getTimeStamp().after(new Date(fifteenMinutesAgo)))
+			{
+				tradesintheLastFifteenMinutes++;
+			}
+		}
+
 		return tradesintheLastFifteenMinutes;
 	}
 	
-	
-
 
 	/**
 	 * Return a dividend yield calculated on the basis of the type of stock and the dividend for the particular stock in question
@@ -112,6 +135,7 @@ public class Stock
 	public double getDividendYield()
 	{
 		double dividendYield = 0.0;
+		getStockPrice();
 
 		// The assumption here is that the stock will be either COMMON or PREFFERED.
 		// Any other type of stock will return a dividend of zero.
@@ -127,8 +151,8 @@ public class Stock
 
 		return dividendYield;
 	}
-
 	/**
+
 	 * Return the P/E ratio for this stock.
 	 * 
 	 * The P/E ratio is calculated as the ratio of the ticker price to the last dividend
@@ -143,6 +167,7 @@ public class Stock
 
 		if (lastDividend > 0)
 		{
+			getStockPrice();
 			return tickerPrice / lastDividend;
 		}
 		else
@@ -161,9 +186,8 @@ public class Stock
 	 * @param tradeType		The type of trade - was this BUY or SELL
 	 * @param timeStamp		The timestamp of this trade
 	 */
-	public void tradeThisStock(int tradeQuantity, int tradePrice,  Stock.TRADETYPE tradeType, Date timeStamp)
+	public void tradeThisStock(int tradeQuantity, int tradePrice,  Trade.TRADETYPE tradeType, Date timeStamp) throws IllegalArgumentException
 	{
-		//trades.add(new Trade(tradeQuantity, tradePrice, tradeType, timeStamp));
 		allTrades.addTrade(tradeQuantity, tradePrice, tradeType, timeStamp);
 	}
 
@@ -235,100 +259,27 @@ public class Stock
 	{
 		return this.stockSymbol;
 	}
+	
+	public STOCKTYPE getStockType()
+	{
+		return stockType;
+	}
+	
+	
+	public int getLastDividend()
+	{
+		return lastDividend;
+	}
 
+	public double getFixedDividend()
+	{
+		return fixedDividend;
+	}
+	
+	public int getParValue()
+	{
+		return parValue;
+	}
 
-//	/**
-//	 * Create an inner class to handle the trades for a given stock.
-//	 * 
-//	 * @author Iain
-//	 *
-//	*/
-//	private class Trade
-//	{
-//		/**
-//		 * The price at which the stock is traded.
-//		 */
-//		int tradePrice; 
-//
-//		/**
-//		 * The quantity of stock which is being traded
-//		 */
-//		int tradeQuantity;
-//
-//		/**
-//		 * The type of trade - either BUY or SELL
-//		 */
-//		Stock.TRADETYPE tradeType;
-//
-//		/**
-//		 * The exact time at which the trade was processed
-//		 */
-//		Date timeStamp;
-//
-//		/**
-//		 * Generate a trade involving this stock object
-//		 * 
-//		 * @param tradeQuantity The quantity of this stock object to be traded
-//		 * @param tradePrice	The price at which the stock is traded in this trade
-//		 * @param tradeType		The type of trade - either BUY or SELL
-//		 * @param timeStamp		The timestamp of this trade
-//		 */
-//		public Trade(int tradeQuantity, int tradePrice, Stock.TRADETYPE tradeType, Date timeStamp)
-//		{
-//			this.tradePrice = tradePrice;
-//			this.tradeQuantity = tradeQuantity;
-//			this.tradeType = tradeType;
-//			this.timeStamp = timeStamp;
-//		}
-//
-//
-//		/**
-//		 * Returns the price at which the stock was traded in this trade
-//		 * 
-//		 * @return tradePrice	The price at which the stock was traded
-//		 */
-//		public int getTradePrice()
-//		{
-//			return tradePrice;
-//		}
-//
-//		/**
-//		 * Returns the quantity of this stock which was traded in this trade
-//		 * 
-//		 * @return tradeQuantity	The quantity of this stock which was traded in this trade
-//		 */
-//		public int getTradeQuantity()
-//		{
-//			return tradeQuantity;
-//		}
-//
-//		/**
-//		 * Returns the type of this trade - either BUY or SELL
-//		 * 
-//		 * @return tradeType 	The type of this trade - either BUY or SELL
-//		 */
-//		public Stock.TRADETYPE getTradeType()
-//		{
-//			return tradeType;
-//		}
-//
-//		/**
-//		 * Returns the exact time at which this trade was processed
-//		 * 
-//		 * @return timeStamp 	The exact time at which this trade was processed
-//		 */
-//		public Date getTimeStamp()
-//		{
-//			return timeStamp;
-//		}
-//
-//
-//		public String toString()
-//		{
-//			String tradeDetails = String.format("%-8s : %-11s : %-10s : %-8s", tradeQuantity, tradePrice, tradeType, timeStamp);
-//			return tradeDetails;
-//		}
-//
-//	}
 
 }

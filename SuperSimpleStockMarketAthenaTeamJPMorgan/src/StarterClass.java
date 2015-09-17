@@ -1,8 +1,11 @@
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Random;
+
+import models.*;
 
 
 public class StarterClass {
@@ -52,14 +55,21 @@ public class StarterClass {
 			int timeDifference = random.nextInt(1000*60*30);
 			//long timeDifference = random.nextLong() / (1000*60*30);
 
-			
-			if (k == 0)
+			try
 			{
-				stockTraded.tradeThisStock(numberSold, price, Stock.TRADETYPE.BUY, new Date(new Date().getTime() - timeDifference));
+				if (k == 0)
+				{
+					stockTraded.tradeThisStock(numberSold, price, Trade.TRADETYPE.BUY, new Date(new Date().getTime() - timeDifference));
+				}
+				else
+				{
+					stockTraded.tradeThisStock(numberSold, price, Trade.TRADETYPE.SELL, new Date(new Date().getTime() - timeDifference));
+				}
 			}
-			else
+			catch (IllegalArgumentException error)
 			{
-				stockTraded.tradeThisStock(numberSold, price, Stock.TRADETYPE.SELL, new Date(new Date().getTime() - timeDifference));
+
+				// handle IllegalArgumentException
 			}
 		}
 

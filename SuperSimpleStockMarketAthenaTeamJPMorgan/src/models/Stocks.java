@@ -1,16 +1,17 @@
+package models;
+
 import java.util.ArrayList;
 
 public class Stocks 
 {
 	/**
-	 * A collection of each of the Stock objects contained in the list of stocks
+	 * A collection of the Stock objects contained in this Stocks object
 	 */
 	private ArrayList<Stock> stocks;
 
 	public Stocks()
 	{
 		stocks = new ArrayList<Stock>();
-
 	}
 
 	/**
@@ -43,7 +44,7 @@ public class Stocks
 			{
 				if (stock.countTradesintheLastFifteenMinutes() > 0)
 				{
-					productofStockPrices *= stock.getStockPrice();
+					productofStockPrices = stock.getStockPrice() * productofStockPrices;
 					stocksTraded++;
 				}
 
